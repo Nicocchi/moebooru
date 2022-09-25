@@ -1,0 +1,35 @@
+{
+  "name": "moebooru-server",
+  "version": "1.0.0",
+  "description": "booru style image tag system",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "Nicocchi",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nicocchi/moebooru.git"
+  },
+  "keywords": [
+    "booru",
+    "imageboard"
+  ],
+  "bugs": {
+    "url": "https://github.com/Nicocchi/moebooru/issues"
+  },
+  "homepage": "https://github.com/Nicocchi/moebooru#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "image-size": "^1.0.2",
+    "mongoose": "^6.6.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
