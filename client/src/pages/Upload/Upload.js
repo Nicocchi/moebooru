@@ -5,7 +5,7 @@ import { SendIcon } from "../../components/SendIcon";
 import "./Upload.css";
 import axios from "axios";
 
-function Home({ Component }) {
+function Home() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isFilePicked, setIsFilePicked] = useState(false);
   const [tags, setTags] = useState([]);
@@ -18,7 +18,6 @@ function Home({ Component }) {
   };
 
   const handleSubmission = () => {
-    console.log(selectedFile);
     const formData = new FormData();
     formData.append("image", selectedFile);
     formData.append("tags", tags);
@@ -30,7 +29,7 @@ function Home({ Component }) {
       },
     };
     axios
-      .post("http://localhost:5000", formData, options)
+      .post(`${process.env.REACT_APP_BACKEND_URL}`, formData, options)
       .then((res) => {
         setSelectedFile(null);
         setIsFilePicked(false);
@@ -62,7 +61,7 @@ function Home({ Component }) {
 
   return (
     <div className="Home">
-      <Text h1>Moebooru</Text>
+      <Text h1>Upload</Text>
       <Input
         color="primary"
         type="file"

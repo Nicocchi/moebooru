@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Button, Text, Input, Image } from "@nextui-org/react";
-import { SendButton } from "../../components/SendButton";
-import { SendIcon } from "../../components/SendIcon";
+import { Image } from "@nextui-org/react";
 import "./Gallery.css";
 import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 
-function Gallery({ Component }) {
+function Gallery() {
   let [searchParams, setSearchParams] = useSearchParams();
   const [files, SetFiles] = useState([]);
 
@@ -19,7 +17,7 @@ function Gallery({ Component }) {
       }
 
       axios
-        .get(`http://localhost:5000/images?tags=${params[0][1]}`)
+        .get(`${process.env.REACT_APP_BACKEND_URL}/images?tags=${params[0][1]}`)
         .then((res) => {
           SetFiles(res.data);
         })
@@ -28,7 +26,7 @@ function Gallery({ Component }) {
         });
     } else {
       axios
-        .get("http://localhost:5000/images")
+        .get(`${process.env.REACT_APP_BACKEND_URL}/images`)
         .then((res) => {
           SetFiles(res.data);
         })
@@ -48,7 +46,7 @@ function Gallery({ Component }) {
             <Image
               width={320}
               height={180}
-              src={`http://localhost:5000/${file.name}`}
+              src={`${process.env.REACT_APP_BACKEND_URL}/${file.name}`}
               alt={file.name}
               showSkeleton
               objectFit="scale-down"

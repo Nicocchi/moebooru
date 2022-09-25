@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Button, Text, Input, Image } from "@nextui-org/react";
-import { SendButton } from "../../components/SendButton";
-import { SendIcon } from "../../components/SendIcon";
+import { Text, Image } from "@nextui-org/react";
 import "./Post.css";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
-function Post({ Component }) {
+function Post() {
   const params = useParams();
   const [files, SetFiles] = useState([]);
   const [isFullSize, SetIsFullSize] = useState(false);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/post?post_id=${params.post_id}`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/post?post_id=${params.post_id}`)
       .then((res) => {
         console.log(res.data);
         SetFiles(res.data);
@@ -44,7 +42,7 @@ function Post({ Component }) {
           width={file.width}
           height={file.height}
           key={file._id}
-          src={`http://localhost:5000/${file.name}`}
+          src={`${process.env.REACT_APP_BACKEND_URL}/${file.name}`}
           alt={file.name}
           showSkeleton
           onClick={() => SetIsFullSize(!isFullSize)}
