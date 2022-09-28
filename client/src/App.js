@@ -6,7 +6,7 @@ import Upload from "./pages/Upload/Upload";
 import Gallery from "./pages/Gallery/Gallery";
 import Post from "./pages/Post/Post";
 
-function App({ Component }) {
+function App() {
   return (
     <div className="App">
       <Routes>
