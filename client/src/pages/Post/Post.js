@@ -17,14 +17,13 @@ function Post() {
         `${process.env.REACT_APP_BACKEND_URL}/post?post_id=${params.post_id}`
       )
       .then((res) => {
-        console.log(res.data);
         setFiles(res.data.post);
         setTags(res.data.tags);
         setArtists(res.data.artists);
         setIsFullSize(false);
       })
       .catch((err) => {
-        console.log("ERR", err);
+        console.error(err);
       });
 
     return () => {};
@@ -43,20 +42,17 @@ function Post() {
         }}
       >
         <Text h2>Artists</Text>
-        <div style={{ display: "flex", flexDirection: "column"}}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           {artists.length > 0 ? (
             artists.map((artist, index) => {
               return (
                 <Link
                   to={`/gallery?artists=${artist.name}`}
                   style={{ display: "flex" }}
+                  key={index}
                 >
-                  <Text key={index} style={{ marginRight: "10px" }}>
-                    {artist.name}
-                  </Text>
-                  <Text key={`${index}_${Date.now()}`} color="primary">
-                    {artist.count}
-                  </Text>
+                  <Text style={{ marginRight: "10px" }}>{artist.name}</Text>
+                  <Text color="primary">{artist.count}</Text>
                 </Link>
               );
             })
@@ -72,13 +68,10 @@ function Post() {
                 <Link
                   to={`/gallery?tags=${tag.name}`}
                   style={{ display: "flex" }}
+                  key={index}
                 >
-                  <Text key={index} style={{ marginRight: "10px" }}>
-                    {tag.name}
-                  </Text>
-                  <Text key={`${index}_${Date.now()}`} color="primary">
-                    {tag.count}
-                  </Text>
+                  <Text style={{ marginRight: "10px" }}>{tag.name}</Text>
+                  <Text color="primary">{tag.count}</Text>
                 </Link>
               );
             })

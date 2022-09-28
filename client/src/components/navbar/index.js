@@ -1,4 +1,3 @@
-import { Button } from "@nextui-org/react";
 import { Outlet, Link } from "react-router-dom";
 
 function NavBar({ Component }) {

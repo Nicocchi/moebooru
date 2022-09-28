@@ -18,14 +18,12 @@ function Home() {
         }
       })
       .catch((err) => {
-        console.log("ERR", err);
+        console.error(err);
       });
   };
 
   const handleSelectSearch = (ev) => {
     if (ev.key === "Enter") {
-      const selectedTags = selectedOption.map((opt) => opt.label);
-      console.log("SELECTED TAGS ", selectedTags);
       navigate(`/gallery?tags=${selectedOption.map((opt) => opt.label)}`)
     }
   }

@@ -22,7 +22,7 @@ function Gallery() {
           SetFiles(res.data);
         })
         .catch((err) => {
-          console.log("ERR", err);
+          console.error(err);
         });
     } else {
       axios
@@ -31,7 +31,7 @@ function Gallery() {
           SetFiles(res.data);
         })
         .catch((err) => {
-          console.log("ERR", err);
+          console.error(err);
         });
     }
 
@@ -50,7 +50,7 @@ function Gallery() {
               alt={file.name}
               showSkeleton
               objectFit="scale-down"
-              style={{margin: "10px"}}
+              style={{ margin: "10px" }}
             />
           </Link>
         );

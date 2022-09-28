@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import { Button, Text, Input, Image, Switch, Tooltip } from "@nextui-org/react";
-import { SendButton } from "../../components/SendButton";
-import { SendIcon } from "../../components/SendIcon";
+import { Button, Text, Input, Switch, Tooltip } from "@nextui-org/react";
 import FileDragAndDrop from "../../components/DragAndDrop";
-import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { ActionMeta, OnChangeValue } from "react-select";
 
 import "./Upload.css";
 import axios from "axios";
@@ -25,48 +21,6 @@ function Home() {
   const [hiddenToggle, setHiddenToggle] = useState(false);
   const [anonymousToggle, setAnonymousToggle] = useState(false);
 
-  const changeHandler = (ev) => {
-    if (!ev.target.files[0]) return;
-    setSelectedFile(ev.target.files[0]);
-    setIsFilePicked(true);
-  };
-
-  const handleSubmission = () => {
-    const formData = new FormData();
-    formData.append("image", selectedFile);
-    formData.append("tags", tags);
-    // formData.append("author", author);
-    formData.append("source", source);
-    const options = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}`, formData, options)
-      .then((res) => {
-        setSelectedFile(null);
-        setIsFilePicked(false);
-      })
-      .catch((err) => {
-        console.log("ERR", err);
-      });
-  };
-
-  const handleTags = (ev) => {
-    if (ev.key === "Enter") {
-      let tgs = tags.map((tag) => tag);
-      tgs.push(ev.target.value);
-      setTags(tgs);
-    }
-  };
-
-  const handleAuthor = (ev) => {
-    if (ev.key === "Enter") {
-      // setAuthor(ev.target.value);
-    }
-  };
-
   const handleSrc = (ev) => {
     if (ev.key === "Enter") {
       setSource(ev.target.value);
@@ -74,7 +28,6 @@ function Home() {
   };
 
   const onUpload = (files) => {
-    console.log(files);
     setFiles(files);
     setIsFilePicked(true);
   };
@@ -88,15 +41,8 @@ function Home() {
         }
       })
       .catch((err) => {
-        console.log("ERR", err);
+        console.error(err);
       });
-  };
-
-  const handleSelectTagSearch = (ev) => {
-    if (ev.key === "Enter") {
-      const selectedTags = selectedTagOption.map((opt) => opt.label);
-      console.log("SELECTED TAGS ", selectedTags);
-    }
   };
 
   const handleArtistSearch = (value) => {
@@ -108,40 +54,19 @@ function Home() {
         }
       })
       .catch((err) => {
-        console.log("ERR", err);
+        console.error(err);
       });
   };
 
-  const handleSelectArtistSearch = (ev) => {
-    if (ev.key === "Enter") {
-      const selectedTags = selectedArtistOption.map((opt) => opt.label);
-      console.log("SELECTED TAGS ", selectedTags);
-    }
-  };
-
   const handleTagOnChange = (newValue, actionMeta) => {
-    console.group("Value Changed");
-    console.log(newValue);
-    console.log(`action: ${actionMeta.action}`);
-    console.groupEnd();
     setTags(newValue.map((tag) => tag.label));
   };
 
   const handleArtistOnChange = (newValue, actionMeta) => {
-    console.group("Value Changed");
-    console.log(newValue);
-    console.log(`action: ${actionMeta.action}`);
-    console.groupEnd();
     setArtists(newValue.map((art) => art.label));
   };
 
   const onFileUpload = (e) => {
-    // console.log("Artist", selectedArtistOption);
-    // console.log("Tags", selectedTagOption);
-
-    console.log("TAGS", tags);
-    console.log("ARTIST", artists);
-
     const formData = new FormData();
     formData.append("image", files[0]);
     formData.append("tags", tags);
@@ -167,7 +92,7 @@ function Home() {
         setIsFilePicked(false);
       })
       .catch((err) => {
-        console.log("ERR", err);
+        console.error(err);
       });
   };
 
@@ -203,20 +128,6 @@ function Home() {
   return (
     <div className="Home">
       <Text h1>Upload</Text>
-      {/* <Input
-        color="primary"
-        type="file"
-        name="file"
-        aria-label="image upload"
-        contentRightStyling={false}
-        placeholder="Upload image"
-        onChange={changeHandler}
-        contentRight={
-          <Button disabled={!isFilePicked} onPress={handleSubmission}>
-            <SendIcon disabled={!isFilePicked} />
-          </Button>
-        }
-      /> */}
       <FileDragAndDrop
         count={1}
         formats={[
@@ -236,9 +147,6 @@ function Home() {
         ]}
         onUpload={onUpload}
       >
-        {/* <span role="img" aria-label="emoji" className="area__icon">
-          &#128526;
-        </span> */}
         <Text h3>Upload or drop a file right here</Text>
       </FileDragAndDrop>
       {files && files.length > 0 ? (
@@ -290,7 +198,9 @@ function Home() {
                       </Tooltip>
                     </div>
                     <div style={{ display: "flex" }}>
-                      <Tooltip content={"Don't associate your username to the image"}>
+                      <Tooltip
+                        content={"Don't associate your username to the image"}
+                      >
                         <Text style={{ marginRight: "10px" }}>
                           {anonymousToggle ? "Anonymous" : "Display"}
                         </Text>
@@ -302,7 +212,7 @@ function Home() {
                     </div>
                   </div>
                   <Text style={{ marginBottom: "10px" }}>{file.name}</Text>
-                  {/* <Input placeholder="Tags" onKeyDown={handleTags} /> */}
+                  {/* end of top */}
                   <Text style={{ marginRight: "10px" }}>Tags</Text>
                   <CreatableSelect
                     onChange={handleTagOnChange}
@@ -335,7 +245,7 @@ function Home() {
                     width="400px"
                     aria-label="artist select"
                   />
-                  {/* end of author */}
+                  {/* end of artist */}
                   <Text style={{ marginRight: "10px" }}>Source</Text>
                   <Input
                     placeholder="Source"
