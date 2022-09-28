@@ -71,7 +71,7 @@ function Home() {
         options={tagOptions.map(opt => ({label: opt.name, value: opt.name}))}
         onKeyDown={handleSelectSearch}
         styles={customStyles}
-        width="200px"
+        width="400px"
       />
     </div>
   );

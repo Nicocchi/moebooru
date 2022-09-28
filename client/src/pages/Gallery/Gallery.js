@@ -44,12 +44,13 @@ function Gallery() {
         return (
           <Link to={`/post/${file._id}`} key={file._id}>
             <Image
-              width={320}
-              height={180}
+              width={300}
+              height={300}
               src={`${process.env.REACT_APP_BACKEND_URL}/${file.name}`}
               alt={file.name}
               showSkeleton
               objectFit="scale-down"
+              style={{margin: "10px"}}
             />
           </Link>
         );

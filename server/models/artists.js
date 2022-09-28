@@ -21,9 +21,8 @@ db.once(
 
 const schema = new mongoose.Schema({
   name: { type: String, unique: true },
-  hidden: { type: Boolean, default: false },
 });
 
-const tagModel = mongoose.model("tags", schema);
+const artistModel = mongoose.model("artists", schema);
 
-module.exports = tagModel;
+module.exports = artistModel;

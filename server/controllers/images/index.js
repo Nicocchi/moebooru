@@ -2,6 +2,7 @@ const multer = require("multer");
 const imageSize = require("image-size");
 const imageModel = require("../../models/upload");
 const tagModel = require("../../models/tags");
+const artistModel = require("../../models/artists");
 const imageDir = process.env.IMAGE_DIR;
 /**
  * Check File Type
@@ -44,19 +45,38 @@ exports.imageUpload = (req, res) => {
     }
 
     console.log("FILE", req.file);
-    console.log("REQ", req);
+    console.log("REQ BODY", req.body);
+
+    if (!req.file) {
+      return res.status(400).send({
+        content: "Sorry, no file supplied",
+        error: err,
+      });
+    }
+
+    let tags = [];
+    let artists = [];
+
+    tags = req.body.tags.split(" ").join("_").toLowerCase().split(",");
+    artists = req.body.artists.split(" ").join("_").toLowerCase().split(",");
+
+    console.log("Tags: ", tags);
+    console.log("Artists: ", artists);
 
     const filename = req.file.filename;
     const dims = imageSize(`${imageDir}/${filename}`);
     const imageDetails = new imageModel({
       name: filename,
-      author: req.body.author,
-      tags: req.body.tags.split(","),
+      artists: artists,
+      tags: tags,
       uploader: "Anonymous",
       width: dims.width,
       height: dims.height,
       type: dims.type,
       source: req.body.source,
+      nsfw: req.body.nsfw,
+      hidden: req.body.hidden,
+      anonymous: req.body.anonymous,
     });
 
     imageDetails.save((err, doc) => {
@@ -67,13 +87,21 @@ exports.imageUpload = (req, res) => {
         });
       }
 
-      const tags = req.body.tags.split(",");
       tags.forEach((element) => {
-        // const tag = new tagModel({
-        //   name: element,
-        // });
+        tagModel.updateOne(
+          { name: element },
+          { name: element },
+          { upsert: true },
+          (err, doc) => {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      });
 
-        tagModel.update(
+      artists.forEach((element) => {
+        artistModel.updateOne(
           { name: element },
           { name: element },
           { upsert: true },
@@ -91,12 +119,17 @@ exports.imageUpload = (req, res) => {
 };
 
 exports.imageGetAll = (req, res) => {
-  console.log("QUERY ", req.query)
+  console.log("QUERY ", req.query);
+  let tags = [];
+  let artists = [];
+
+  if (req.query.artists) artists = req.query.artists.split(",");
+
   if (req.query.tags) {
-    const tags = req.query.tags.split(",");
+    tags = req.query.tags.split(",");
     console.log("TAGS", req.query);
 
-    imageModel.find({tags: {"$in": tags}}, (err, images) => {
+    imageModel.find({ tags: { $in: tags } }, (err, images) => {
       if (err) {
         return res.status(400).send({
           content: "Sorry, something went wrong",
@@ -104,8 +137,8 @@ exports.imageGetAll = (req, res) => {
         });
       }
 
-      return res.status(200).send(images)
-    })
+      return res.status(200).send(images);
+    });
   } else {
     imageModel.find({}, (err, images) => {
       if (err) {
@@ -114,41 +147,104 @@ exports.imageGetAll = (req, res) => {
           error: err,
         });
       }
-  
+
       console.log(images);
-  
+
       return res.status(200).send(images);
     });
   }
-
-  
 };
 
-exports.imageGet = (req, res) => {
+exports.imageGet = async (req, res) => {
   if (req.query.post_id) {
-    imageModel.find({ _id: req.query.post_id }, (err, images) => {
-      if (err) {
-        return res.status(400).send({
-          content: "Sorry, something went wrong",
-          error: err,
-        });
+    try {
+      const post = await imageModel.find({ _id: req.query.post_id });
+
+      let tags = [];
+      let artists = [];
+
+      const postTags = post[0].tags;
+      const postArtists = post[0].artists;
+
+      if (postTags) {
+        try {
+          await Promise.all(
+            postTags.map(async (tag) => {
+              const count = await imageModel
+                .countDocuments({ tags: { $in: tag } })
+                .exec();
+
+              const newTag = {
+                name: tag,
+                count,
+              };
+              tags.push(newTag);
+            })
+          );
+        } catch (err) {
+          console.log(err);
+        }
       }
 
-      console.log(images);
+      if (postArtists) {
+        try {
+          await Promise.all(
+            postArtists.map(async (artist) => {
+              const count = await imageModel
+                .countDocuments({ artists: { $in: artist } })
+                .exec();
 
-      return res.status(200).send(images);
-    });
+              const newArtist = {
+                name: artist,
+                count,
+              };
+              artists.push(newArtist);
+            })
+          );
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      return res.status(200).send({
+        post,
+        tags,
+        artists,
+      });
+    } catch (err) {
+      return res
+        .status(400)
+        .send({ content: "Sorry, something went wrong", error: err });
+    }
   }
 };
 
 exports.tagGet = (req, res) => {
-  tagModel.find({$text: {$search: req.query.tag_name}}, (err, doc) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send("Sorry, something went wrong");
-    }
+  tagModel.find(
+    { $tags: { $regex: req.query.tag, $options: "i" } },
+    (err, doc) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Sorry, something went wrong");
+      }
 
-    console.log(doc);
-    return res.status(200).send(doc);
-  })
-}
+      console.log(doc);
+      return res.status(200).send(doc);
+    }
+  );
+};
+
+exports.artistGet = (req, res) => {
+  artistModel.find(
+    { $artists: { $regex: req.query.artist, $options: "i" } },
+    (err, doc) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Sorry, something went wrong");
+      }
+
+      console.log(doc);
+      return res.status(200).send(doc);
+    }
+  );
+};

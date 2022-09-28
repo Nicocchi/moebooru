@@ -20,7 +20,7 @@ db.once(
 );
 
 const uploadSchema = new mongoose.Schema({
-  author: String,
+  artists: Array,
   name: String,
   tags: Array,
   uploader: String,
@@ -28,6 +28,9 @@ const uploadSchema = new mongoose.Schema({
   height: Number,
   type: String,
   source: String,
+  nsfw: Boolean,
+  hidden: Boolean,
+  anonymous: Boolean,
 });
 
 const uploadModel = mongoose.model("images", uploadSchema);
