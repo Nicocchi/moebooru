@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text } from "@nextui-org/react";
+import { Text, Badge } from "@nextui-org/react";
 import Image from "../../components/Image";
 import "./Post.css";
 import axios from "axios";
@@ -30,6 +30,12 @@ function Post() {
     return () => {};
   }, []);
 
+  const randomColor = () => {
+    const colors = ["default", "primary", "secondary", "success", "warning", "error"]
+    const index = Math.floor(Math.random() * colors.length);
+    return `${colors[index]}`;
+  }
+
   return (
     <div className="Post">
       <div
@@ -52,8 +58,11 @@ function Post() {
                   style={{ display: "flex" }}
                   key={index}
                 >
-                  <Text style={{ marginRight: "10px" }}>{artist.name}</Text>
-                  <Text color="primary">{artist.count}</Text>
+                  <Badge variant="flat" disableOutline color={randomColor()} style={{marginBottom: "10px"}}>
+                    {artist.name} *{artist.count}
+                  </Badge>
+                  {/* <Text style={{ marginRight: "10px" }}>{artist.name}</Text>
+                  <Text color="primary">{artist.count}</Text> */}
                 </Link>
               );
             })
@@ -71,8 +80,11 @@ function Post() {
                   style={{ display: "flex" }}
                   key={index}
                 >
-                  <Text style={{ marginRight: "10px" }}>{tag.name}</Text>
-                  <Text color="primary">{tag.count}</Text>
+                  <Badge variant="flat"  disableOutline color={randomColor()} style={{marginBottom: "10px"}}>
+                    {tag.name} *{tag.count}
+                  </Badge>
+                  {/* <Text style={{ marginRight: "10px" }}>{tag.name}</Text>
+                  <Text color="primary">{tag.count}</Text> */}
                 </Link>
               );
             })
@@ -82,8 +94,10 @@ function Post() {
         </div>
       </div>
       {files.map((file) => (
-        <div key={file._id}>
-          <Text size="$sm" style={{ marginTop: "20px", paddingLeft: 20 }}>Image at reduced size</Text>
+        <div key={file._id} style={{marginTop: "20px", paddingLeft: 20, display: "flex", flexDirection: "column", alignItems: "center", width: "100%"}}>
+          <Text size="$sm">
+            Image at reduced size. <a target="_blank" rel="noopener noreferrer" href={`${process.env.REACT_APP_BACKEND_URL}/${file.name}` }>View Original</a>
+          </Text>
           <Image
             src={`${process.env.REACT_APP_BACKEND_URL}/${file.name}`}
             noHover
