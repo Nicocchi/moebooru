@@ -3,6 +3,7 @@ import { Button, Text, Input, Switch, Tooltip } from "@nextui-org/react";
 import FileDragAndDrop from "../../components/DragAndDrop";
 import CreatableSelect from "react-select/creatable";
 import customStyles from "../../components/ReactSelect/SelectStyle";
+import { FaTrash } from "react-icons/fa";
 
 import "./Upload.css";
 import axios from "axios";
@@ -66,6 +67,11 @@ function Home() {
   const handleArtistOnChange = (newValue, actionMeta) => {
     setArtists(newValue.map((art) => art.label));
   };
+
+  const deleteFile = () => {
+    setFiles([]);
+    setIsFilePicked(false);
+  }
 
   const onFileUpload = (e) => {
     const formData = new FormData();
@@ -169,7 +175,7 @@ function Home() {
                         />
                       </Tooltip>
                     </div>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", marginRight: "30px" }}>
                       <Tooltip
                         content={"Don't associate your username to the image"}
                       >
@@ -182,7 +188,16 @@ function Home() {
                         />
                       </Tooltip>
                     </div>
+                    <div>
+                      <Button
+                        auto
+                        color="error"
+                        icon={<FaTrash fill="currentColor" filled />}
+                        onPress={deleteFile}
+                      />
+                    </div>
                   </div>
+
                   <Text style={{ marginBottom: "10px" }}>{file.name}</Text>
                   {/* end of top */}
                   <Text style={{ marginRight: "10px" }}>Tags</Text>
