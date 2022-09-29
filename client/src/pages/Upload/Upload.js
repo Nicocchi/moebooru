@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Text, Input, Switch, Tooltip } from "@nextui-org/react";
 import FileDragAndDrop from "../../components/DragAndDrop";
 import CreatableSelect from "react-select/creatable";
+import customStyles from "../../components/ReactSelect/SelectStyle";
 
 import "./Upload.css";
 import axios from "axios";
@@ -94,35 +95,6 @@ function Home() {
       .catch((err) => {
         console.error(err);
       });
-  };
-
-  const customStyles = {
-    menu: (provided, state) => ({
-      ...provided,
-      width: state.selectProps.width,
-      borderBottom: "1px dotted pink",
-      // color: state.selectProps.menuColor,
-      color: "white",
-      backgroundColor: "#16181a",
-      // padding: 20,
-    }),
-
-    control: (_, { selectProps: { width } }) => ({
-      display: "flex",
-      width: width,
-      height: "40px",
-      color: "white",
-      backgroundColor: "#16181a",
-      borderRadius: "10px",
-      marginBottom: "20px",
-    }),
-
-    singleValue: (provided, state) => {
-      const opacity = state.isDisabled ? 0.5 : 1;
-      const transition = "opacity 300ms";
-
-      return { ...provided, opacity, transition };
-    },
   };
 
   return (
