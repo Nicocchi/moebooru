@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import "./Home.css";
 import axios from "axios";
+import {RabbitLogo} from "../../components/Logo/Rabbit";
 
 function Home() {
   const [tagOptions, setTagOptions] = useState([]);
@@ -58,7 +59,10 @@ function Home() {
 
   return (
     <div className="Home">
+      <div style={{display: "flex", alignItems: "center", marginBottom: "20px", paddingLeft: "20px", width: "400px"}}>
+      <RabbitLogo fill="#ff557f" width={100} height={100}/>
       <Text h1>Moebooru</Text>
+      </div>
       <Select
         defaultValue={selectedOption}
         onChange={setSelectedOption}
