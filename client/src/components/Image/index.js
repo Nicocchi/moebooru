@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import "./index.css";
 
-function Image({ src, width, height, style, alt, isNSFW, isFiltered }) {
+function Image({ src, width, height, style, alt, isNSFW, isFiltered, noHover }) {
   useEffect(() => {
     return () => {};
   }, []);
@@ -27,7 +27,7 @@ function Image({ src, width, height, style, alt, isNSFW, isFiltered }) {
         </Text>
       ) : null}
       <img
-        className={`${isFiltered ? "Image__nsfw" : "Image__image"}`}
+        className={`${noHover ? "" : isFiltered ? "Image__nsfw" : "Image__image"}`}
         src={src}
         width={width}
         height={height}
@@ -46,6 +46,7 @@ Image.propTypes = {
   style: PropTypes.object,
   isNSFW: PropTypes.bool,
   isFiltered: PropTypes.bool,
+  noHover: PropTypes.bool,
 };
 
 export default Image;

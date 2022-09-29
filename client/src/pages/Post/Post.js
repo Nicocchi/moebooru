@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Text, Image } from "@nextui-org/react";
+import { Text } from "@nextui-org/react";
+import Image from "../../components/Image";
 import "./Post.css";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
@@ -81,17 +82,14 @@ function Post() {
         </div>
       </div>
       {files.map((file) => (
-        <Image
-          // style={{border: "2px solid red"}}
-          width={file.width}
-          height={file.height}
-          key={file._id}
-          src={`${process.env.REACT_APP_BACKEND_URL}/${file.name}`}
-          alt={file.name}
-          showSkeleton
-          onClick={() => setIsFullSize(!isFullSize)}
-          style={{ marginTop: "20px" }}
-        />
+        <div key={file._id}>
+          <Text size="$sm" style={{ marginTop: "20px", paddingLeft: 20 }}>Image at reduced size</Text>
+          <Image
+            src={`${process.env.REACT_APP_BACKEND_URL}/${file.name}`}
+            noHover
+            style={{ padding: "0 20px" }}
+          />
+        </div>
       ))}
     </div>
   );
