@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image } from "@nextui-org/react";
+import Image from "../../components/Image";
 import "./Gallery.css";
 import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
@@ -44,13 +44,13 @@ function Gallery() {
         return (
           <Link to={`/post/${file._id}`} key={file._id}>
             <Image
-              width={300}
-              height={300}
+              width={250}
+              height={250}
               src={`${process.env.REACT_APP_BACKEND_URL}/${file.name}`}
               alt={file.name}
-              showSkeleton
-              objectFit="scale-down"
-              style={{ margin: "10px" }}
+              style={{ margin: "10px", objectFit: "cover", borderRadius: "20px" }}
+              isNSFW={file.nsfw}
+              isFiltered={file.nsfw}
             />
           </Link>
         );
