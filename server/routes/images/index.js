@@ -6,4 +6,5 @@ module.exports = (app) => {
   app.get("/tag", controller.tagGet)
   app.get("/artist", controller.artistGet)
   app.post("/", controller.imageUpload)
+  app.put("/images", controller.updateImage)
 };

@@ -22,7 +22,7 @@ db.once(
 const uploadSchema = new mongoose.Schema({
   artists: Array,
   name: String,
-  tags: Array,
+  tags: [String],
   uploader: String,
   width: Number,
   height: Number,

@@ -248,3 +248,91 @@ exports.artistGet = (req, res) => {
     }
   );
 };
+
+exports.updateImage = async (req, res) => {
+  try {
+    const { _id, tags, ...body } = req.body;
+    const post = await imageModel.find({ _id });
+
+    if (!post) return res.status(404).send({ content: "No post found" });
+
+    let ntags = [];
+    let artists = [];
+
+    const postTags = post[0].tags;
+    const postArtists = post[0].artists;
+    let bodyTags = [];
+
+
+
+    if (req.body.tags) {
+      bodyTags = req.body.tags
+        .split(" ")
+        .join("_")
+        .toLowerCase()
+        .split(",");
+
+      bodyTags.forEach((element) => {
+        tagModel.updateOne(
+          { name: element },
+          { name: element },
+          { upsert: true },
+          (err, doc) => {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      });
+    } else {
+      ntags = postTags.map((tag) => tag);
+    }
+
+    if (req.body.artists) {
+      const bodyArtists = req.body.artists
+        .split(" ")
+        .join("_")
+        .toLowerCase()
+        .split(",");
+      bodyArtists.forEach((element) => {
+        artistModel.updateOne(
+          { name: element },
+          { name: element },
+          { upsert: true },
+          (err, doc) => {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      });
+      
+    } else {
+      artists = postArtists.map((artist) => artist);
+    }
+
+    
+
+    const newTags = postTags.concat(bodyTags);
+    ntags = [...new Set(newTags)]
+
+
+    const update = {
+      ...body,
+      $addToSet: {tags: ntags },
+      artists
+    }
+
+    const doc = await imageModel.updateOne({_id}, {
+      ...body,
+      artists,
+      $addToSet: { tags: ntags},
+    });
+
+    return res.status(200).send(doc);
+  } catch (err) {
+    return res
+      .status(400)
+      .send({ content: "Sorry, something went wrong", error: err });
+  }
+};
