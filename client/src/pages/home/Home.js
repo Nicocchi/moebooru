@@ -3,7 +3,7 @@ import { Text } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import "./Home.css";
-import axios from "axios";
+import axios from "../../utils/axios.config";
 import {RabbitLogo} from "../../components/Logo/Rabbit";
 import customStyles from "../../components/ReactSelect/SelectStyle";
 
@@ -13,7 +13,7 @@ function Home() {
   const navigate = useNavigate();
   const handleSearch = (value) => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/tag?tag_name=${value}`)
+      .get(`/tag?tag_name=${value}`)
       .then((res) => {
         if (res.data) {
           setTagOptions(res.data)

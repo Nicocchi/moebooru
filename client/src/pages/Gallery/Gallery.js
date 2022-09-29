@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "../../components/Image";
 import "./Gallery.css";
-import axios from "axios";
+import axios from "../../utils/axios.config";
 import { Link, useSearchParams } from "react-router-dom";
 
 function Gallery() {
@@ -17,7 +17,7 @@ function Gallery() {
       }
 
       axios
-        .get(`${process.env.REACT_APP_BACKEND_URL}/images?tags=${params[0][1]}`)
+        .get(`/images?tags=${params[0][1]}`)
         .then((res) => {
           SetFiles(res.data);
         })
@@ -26,7 +26,7 @@ function Gallery() {
         });
     } else {
       axios
-        .get(`${process.env.REACT_APP_BACKEND_URL}/images`)
+        .get(`/images`)
         .then((res) => {
           SetFiles(res.data);
         })

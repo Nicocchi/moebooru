@@ -6,7 +6,7 @@ import customStyles from "../../components/ReactSelect/SelectStyle";
 import { FaTrash } from "react-icons/fa";
 
 import "./Upload.css";
-import axios from "axios";
+import axios from "../../utils/axios.config";
 
 function Home() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -37,7 +37,7 @@ function Home() {
 
   const handleTagSearch = (value) => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/tag?tag=${value}`)
+      .get(`/tag?tag=${value}`)
       .then((res) => {
         if (res.data) {
           setTagOptions(res.data);
@@ -50,7 +50,7 @@ function Home() {
 
   const handleArtistSearch = (value) => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/artist?artist=${value}`)
+      .get(`/artist?artist=${value}`)
       .then((res) => {
         if (res.data) {
           setArtistOptions(res.data);
@@ -95,7 +95,7 @@ function Home() {
     };
 
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}`, formData, options)
+      .post(`/`, formData, options)
       .then((res) => {
         setFiles(null);
         setTags(null);

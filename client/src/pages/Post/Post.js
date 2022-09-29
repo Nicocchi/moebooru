@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, Badge } from "@nextui-org/react";
 import Image from "../../components/Image";
 import "./Post.css";
-import axios from "axios";
+import axios from "../../utils/axios.config";
 import { Link, useParams } from "react-router-dom";
 
 function Post() {
@@ -15,7 +15,7 @@ function Post() {
   useEffect(() => {
     axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URL}/post?post_id=${params.post_id}`
+        `/post?post_id=${params.post_id}`
       )
       .then((res) => {
         setFiles(res.data.post);

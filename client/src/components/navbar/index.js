@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import "./index.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../utils/axios.config";
 import { RabbitLogo } from "../Logo/Rabbit";
 import customStyles from "../ReactSelect/SelectStyle";
 
@@ -24,7 +24,7 @@ function NavBar() {
 
   const handleSearch = (value) => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/tag?tag_name=${value}`)
+      .get(`/tag?tag_name=${value}`)
       .then((res) => {
         if (res.data) {
           setTagOptions(res.data);
