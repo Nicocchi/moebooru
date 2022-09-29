@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Text, Input, Switch, Tooltip } from "@nextui-org/react";
+import { Button, Text, Input, Switch, Tooltip, Progress } from "@nextui-org/react";
 import FileDragAndDrop from "../../components/DragAndDrop";
 import CreatableSelect from "react-select/creatable";
 import customStyles from "../../components/ReactSelect/SelectStyle";
@@ -22,6 +22,7 @@ function Home() {
   const [nsfwToggle, setNSFWToggle] = useState(false);
   const [hiddenToggle, setHiddenToggle] = useState(false);
   const [anonymousToggle, setAnonymousToggle] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const handleSrc = (ev) => {
     if (ev.key === "Enter") {
@@ -87,6 +88,10 @@ function Home() {
       headers: {
         "Content-Type": "multipart/form-data",
       },
+      onUploadProgress: progressEv => {
+        const progress = Math.round(100 * (progressEv.loaded / progressEv.total))
+        setUploadProgress(progress);
+      }
     };
 
     axios
@@ -130,10 +135,12 @@ function Home() {
       {files && files.length > 0 ? (
         <div style={{ marginTop: "30px" }}>
           <Button onPress={onFileUpload}>Upload All</Button>
+          <Progress color="primary" value={uploadProgress} style={{marginTop: "30px"}} />
         </div>
       ) : (
         <div></div>
       )}
+
       <div style={{ marginTop: "30px", width: "100%" }}>
         {files && files.length > 0 ? (
           <div
