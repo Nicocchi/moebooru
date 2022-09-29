@@ -118,40 +118,32 @@ exports.imageUpload = (req, res) => {
   });
 };
 
-exports.imageGetAll = (req, res) => {
-  console.log("QUERY ", req.query);
+exports.imageGetAll = async (req, res) => {
   let tags = [];
   let artists = [];
 
   if (req.query.artists) artists = req.query.artists.split(",");
+  if (req.query.tags) tags = req.query.tags.split(",");
+  let posts = null;
 
-  if (req.query.tags) {
-    tags = req.query.tags.split(",");
-    console.log("TAGS", req.query);
+  try {
+    if (req.query.tags && req.query.artists) {
+      posts = await imageModel.find({ tags: { $in: tags }, artists: {$in: artists}});
+    } else if (req.query.artists) {
+      posts = await imageModel.find({ artists: { $in: artists }});
+    } else if (req.query.tags) {
+      posts = await imageModel.find({ tags: { $in: tags }});
+    } else {
+      posts = await imageModel.find({});
+    }
 
-    imageModel.find({ tags: { $in: tags } }, (err, images) => {
-      if (err) {
-        return res.status(400).send({
-          content: "Sorry, something went wrong",
-          error: err,
-        });
-      }
-
-      return res.status(200).send(images);
-    });
-  } else {
-    imageModel.find({}, (err, images) => {
-      if (err) {
-        return res.status(400).send({
-          content: "Sorry, something went wrong",
-          error: err,
-        });
-      }
-
-      console.log(images);
-
-      return res.status(200).send(images);
-    });
+    return res.status(200).send(posts);
+    
+  } catch (error) {
+    return res.status(400).send({
+      content: "Sorry, something went wrong",
+      error,
+    })
   }
 };
 
