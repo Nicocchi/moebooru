@@ -37,7 +37,7 @@ function NavBar() {
 
   const handleSelectSearch = (ev) => {
     if (ev.key === "Enter") {
-      navigate(`/gallery?tags=${selectedOption.map((opt) => opt.label)}`);
+      navigate(`/browse?tags=${selectedOption.map((opt) => opt.label)}`);
     }
   };
 
@@ -65,12 +65,12 @@ function NavBar() {
                 Upload
               </Text>
             </Link>
-            <Link to="/gallery" className="Navbar__link">
+            <Link to="/browse" className="Navbar__link">
               <Text
                 size="$lg"
-                color={activePage == "/gallery" ? "primary" : "white"}
+                color={activePage == "/browse" ? "primary" : "white"}
               >
-                Gallery
+                Browse
               </Text>
             </Link>
           </div>

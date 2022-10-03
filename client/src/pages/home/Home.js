@@ -26,7 +26,7 @@ function Home() {
 
   const handleSelectSearch = (ev) => {
     if (ev.key === "Enter") {
-      navigate(`/gallery?tags=${selectedOption.map((opt) => opt.label)}`)
+      navigate(`/browse?tags=${selectedOption.map((opt) => opt.label)}`)
     }
   }
 

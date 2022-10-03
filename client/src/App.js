@@ -13,7 +13,7 @@ function App() {
         <Route path="/" element={<NavBar />}>
           <Route index element={<Home />} />
           <Route path="upload" element={<Upload />} />
-          <Route path="gallery" element={<Gallery />} />
+          <Route path="browse" element={<Gallery />} />
           <Route path="post/:post_id" element={<Post />} />
           {/* <Route path="*" element={<NoMatch />} /> */}
         </Route>

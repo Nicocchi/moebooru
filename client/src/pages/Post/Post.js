@@ -54,7 +54,7 @@ function Post() {
             artists.map((artist, index) => {
               return (
                 <Link
-                  to={`/gallery?artists=${artist.name}`}
+                  to={`/browse?artists=${artist.name}`}
                   style={{ display: "flex" }}
                   key={index}
                 >
@@ -76,7 +76,7 @@ function Post() {
             tags.map((tag, index) => {
               return (
                 <Link
-                  to={`/gallery?tags=${tag.name}`}
+                  to={`/browse?tags=${tag.name}`}
                   style={{ display: "flex" }}
                   key={index}
                 >
