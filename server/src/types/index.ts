@@ -1,16 +1,19 @@
 export interface IUser {
-    username: string;
-    password: string;
-    avatar?: string;
-    admin: boolean;
-  }
+  username: string;
+  password: string;
+  avatar?: string;
+  admin: boolean;
+  favoritePosts: object[];
+  favoriteArtists: string[];
+  favoriteTags: string[];
+}
 
 export interface IArtist {
-  name: string; 
+  name: string;
 }
 
 export interface ITag {
-  name: string; 
+  name: string;
 }
 
 export interface IPost {

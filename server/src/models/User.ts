@@ -7,6 +7,9 @@ const schema = new Schema<IUser>(
     password: { type: String, required: true },
     admin: { type: Boolean, required: true},
     avatar: String,
+    favoritePosts: Object,
+    favoriteArtists: Object,
+    favoriteTags: Object,
   },
   { timestamps: true }
 );
