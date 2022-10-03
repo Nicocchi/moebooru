@@ -37,7 +37,7 @@ function Home() {
 
   const handleTagSearch = (value) => {
     axios
-      .get(`/tag?tag=${value}`)
+      .get(`/tags?tag=${value}`)
       .then((res) => {
         if (res.data) {
           setTagOptions(res.data);
@@ -50,7 +50,7 @@ function Home() {
 
   const handleArtistSearch = (value) => {
     axios
-      .get(`/artist?artist=${value}`)
+      .get(`/artists?artist=${value}`)
       .then((res) => {
         if (res.data) {
           setArtistOptions(res.data);
@@ -76,7 +76,7 @@ function Home() {
 
   const onFileUpload = (e) => {
     const formData = new FormData();
-    formData.append("image", files[0]);
+    formData.append("file", files[0]);
     formData.append("tags", tags);
     formData.append("artists", artists);
     formData.append("source", source);
@@ -95,7 +95,7 @@ function Home() {
     };
 
     axios
-      .post(`/`, formData, options)
+      .post(`/posts`, formData, options)
       .then((res) => {
         setFiles(null);
         setTags(null);

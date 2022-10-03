@@ -15,7 +15,7 @@ function Post() {
   useEffect(() => {
     axios
       .get(
-        `/post?post_id=${params.post_id}`
+        `/posts?post_id=${params.post_id}`
       )
       .then((res) => {
         setFiles(res.data.post);

@@ -11,7 +11,7 @@ function Gallery() {
   useEffect(() => {
     const tagParams = [];
     const artistParams = [];
-    let urlStr = "/images";
+    let urlStr = "/posts";
 
     if (searchParams.getAll("artists").length > 0) {
       for (let entry of searchParams.entries()) {
@@ -25,11 +25,11 @@ function Gallery() {
     }
 
     if (tagParams.length > 0 && artistParams.length > 0) {
-      urlStr = `/images?tags=${tagParams[0][1]}&artists=${artistParams[0[1]]}`
+      urlStr = `/posts?tags=${tagParams[0][1]}&artists=${artistParams[0[1]]}`
     } else if (tagParams.length > 0 && artistParams.length <= 0) {
-      urlStr = `/images?tags=${tagParams[0][1]}`
+      urlStr = `/posts?tags=${tagParams[0][1]}`
     } else if (tagParams.length <= 0 && artistParams.length > 0) {
-      urlStr = `/images?artists=${artistParams[0][1]}`
+      urlStr = `/posts?artists=${artistParams[0][1]}`
     }
 
     axios

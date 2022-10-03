@@ -9,7 +9,7 @@ import { fileUpload } from "./MulterController";
 const imageDir = process.env.IMAGE_DIR || "public/";
 
 class PostsController {
-  public path = "/post";
+  public path = "/posts";
   public router = Router();
 
   constructor() {
@@ -112,8 +112,8 @@ class PostsController {
       try {
         const post = await Post.find({ _id: _req.query.post_id });
 
-        let tags: string[] = [];
-        let artists: string[] = [];
+        let tags: object[] = [];
+        let artists: object[] = [];
 
         const postTags = post[0].tags as unknown as any[];
         const postArtists = post[0].artists as unknown as any[];
@@ -125,8 +125,11 @@ class PostsController {
                 const count = await Post.countDocuments({
                   tags: { $in: tag },
                 }).exec();
-
-                tags.push(tag);
+                const newTag = {
+                  name: tag,
+                  count,
+                }
+                tags.push(newTag);
               })
             );
           } catch (err) {
@@ -141,8 +144,11 @@ class PostsController {
                 const count = await Post.countDocuments({
                   artists: { $in: artist },
                 }).exec();
-
-                artists.push(artist);
+                const newArtist = {
+                  name: artist,
+                  count,
+                }
+                artists.push(newArtist);
               })
             );
           } catch (err) {
