@@ -24,7 +24,7 @@ function NavBar() {
 
   const handleSearch = (value) => {
     axios
-      .get(`/tags?tag_name=${value}`)
+      .get(`/tags?tags=${value}`)
       .then((res) => {
         if (res.data) {
           setTagOptions(res.data);
@@ -37,6 +37,7 @@ function NavBar() {
 
   const handleSelectSearch = (ev) => {
     if (ev.key === "Enter") {
+      setTagOptions([]);
       navigate(`/browse?tags=${selectedOption.map((opt) => opt.label)}`);
     }
   };

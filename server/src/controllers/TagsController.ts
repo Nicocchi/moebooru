@@ -14,9 +14,9 @@ class TagController {
   }
 
   getTag = (_req: Request, res: Response) => {
-    try {
+    if (!_req.query.tags) return res.status(200).send([]);
       Tag.find(
-        _req.query.tags ? { name: { $regex: _req.query.tags, $options: "i" } } : {},
+        { name: { $regex: _req.query.tags, $options: "i" } },
         (err: Error, doc: any) => {
           if (err) {
             console.log(err);
@@ -25,9 +25,6 @@ class TagController {
           return res.status(200).send(doc);
         }
       );
-    } catch (error) {
-      return res.status(500).send(error);
-    }
     return;
   };
 }

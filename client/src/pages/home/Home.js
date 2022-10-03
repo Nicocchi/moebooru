@@ -13,7 +13,7 @@ function Home() {
   const navigate = useNavigate();
   const handleSearch = (value) => {
     axios
-      .get(`/tags?tag=${value}`)
+      .get(`/tags?tags=${value}`)
       .then((res) => {
         if (res.data) {
           setTagOptions(res.data)
