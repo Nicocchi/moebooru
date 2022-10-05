@@ -4,6 +4,8 @@ import morgan from "morgan";
 import { DatabaseInit } from "orm";
 const imageDir = process.env.IMAGE_DIR!;
 import { CheckAuthorization } from "utils";
+import { logger } from "middleware/logEvents";
+const cors = require('cors');
 
 class App {
   public app: express.Application;
@@ -20,27 +22,28 @@ class App {
 
   private initializeMiddlewares() {
     this.app.use(express.static(imageDir));
-    
-    this.app.use(morgan("dev"));
+
+    // this.app.use(morgan("dev"));
+    this.app.use(logger);
     // parse requests of content-type - application/x-www-form-urlencoded
     this.app.use(bodyParser.urlencoded({ extended: true }));
     // parse requests of content-type - application/json
     this.app.use(bodyParser.json());
 
     // Cors
-    this.app.use((_req, res, next) => {
-      res.header("Access-Control-Allow-Origin", process.env.CORS_ORIGIN);
-      res.header("Access-Control-Allow-Credentials", "true");
-      res.header(
-        "Access-Control-Allow-Methods",
-        "POST, GET, OPTIONS, DELETE, PUT"
-      );
-      res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, x-access-token"
-      );
-      next();
-    });
+    const whitelist = ["http://localhost:3000"];
+    const corsOptions = {
+      origin: (origin: string, cb: Function) => {
+        if (whitelist.indexOf(origin) !== -1) {
+          cb(null, true);
+        } else {
+          cb(new Error("Not allowed by CORS"));
+        }
+      },
+      optionsSuccessStatus: 200
+    }
+
+    this.app.use(cors(corsOptions));
   }
 
   private initializeControllers(controllers: any) {
