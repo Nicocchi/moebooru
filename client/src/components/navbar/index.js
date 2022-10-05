@@ -91,10 +91,10 @@ function NavBar() {
               styles={customStyles}
               width="200px"
             />
-            <Link to="/" className="Navbar__link" style={{marginLeft: "20px"}}>
+            <Link to="/login" className="Navbar__link" style={{marginLeft: "20px"}}>
               <Text>Login</Text>
             </Link>
-            <Button auto flat as={Link} color={activeColor} href="/">
+            <Button auto flat as={Link} color={activeColor} to="/register">
               Sign Up
             </Button>
           </div>
