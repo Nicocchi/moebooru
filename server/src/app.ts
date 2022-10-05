@@ -3,10 +3,14 @@ import * as bodyParser from "body-parser";
 import morgan from "morgan";
 import { DatabaseInit } from "orm";
 const imageDir = process.env.IMAGE_DIR!;
-import { CheckAuthorization } from "utils";
+import { CheckAuthorization } from "middleware/verifyJWT";
 import { logger } from "middleware/logEvents";
 import { errorHandler } from "middleware/errorHandler";
+// const cookieParser = require("cookie-parser");
+import cookieParser from "cookie-parser";
+import { credentials } from "middleware/credentials";
 const cors = require("cors");
+const allowedOrigins = require('./config/allowedOrigins');
 
 class App {
   public app: express.Application;
@@ -30,12 +34,13 @@ class App {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     // parse requests of content-type - application/json
     this.app.use(bodyParser.json());
+    
+    this.app.use(cookieParser());
 
     // Cors
-    const whitelist = ["http://localhost:3000"];
     const corsOptions = {
       origin: (origin: string, cb: Function) => {
-        if (whitelist.indexOf(origin) !== -1) {
+        if (allowedOrigins.indexOf(origin) !== -1) {
           cb(null, true);
         } else {
           cb(new Error("Not allowed by CORS"));
@@ -44,18 +49,10 @@ class App {
       optionsSuccessStatus: 200,
     };
 
+    this.app.use(credentials);
     this.app.use(cors(corsOptions));
 
     this.app.use(errorHandler);
-
-    this.app.all("*", (_req: express.Request, res: express.Response) => {
-      res.status(404);
-      if (_req.accepts("json")) {
-        res.json({ error: "404 not found" });
-      } else {
-        res.type("txt").send("404 Not Found");
-      }
-    });
   }
 
   private initializeControllers(controllers: any) {

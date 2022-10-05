@@ -1,6 +1,6 @@
 import * as express from "express";
 import { User } from "models/User";
-import { CompareSync, GenerateToken } from "utils";
+import { CompareSync, GenerateAccessToken, GenerateRefreshToken } from "utils";
 
 class LoginController {
   public path = "/login";
@@ -11,7 +11,7 @@ class LoginController {
   }
 
   public initializeRoutes() {
-    this.router.get(this.path, this.login);
+    this.router.post(this.path, this.login);
   }
 
   login = async (_req: express.Request, res: express.Response) => {
@@ -30,14 +30,27 @@ class LoginController {
       if (!CompareSync(password, user.password))
         return res.status(400).send("Username or password incorrect");
 
-      const token = await GenerateToken({
+      const accessToken = await GenerateAccessToken({
         id: user.id,
         username: user.username,
       });
 
-      return res.status(200).send({ token });
+      const refreshToken = await GenerateRefreshToken({
+        id: user.id,
+        username: user.username,
+      });
+      await user.updateOne({ refreshToken: refreshToken });
+
+      res.cookie("jwt", refreshToken, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      return res.status(200).send({ accessToken });
     } catch (error) {
-      return res.status(500).send(error);
+      console.log(error);
+      return res.status(500).send({ message: "Something went wrong", error });
     }
   };
 }

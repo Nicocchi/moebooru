@@ -1,7 +1,7 @@
 import * as express from "express";
 import { User } from "models/User";
 import mongoose from "mongoose";
-import { CheckAuthorization } from "utils";
+import { CheckAuthorization } from "middleware/verifyJWT";
 
 class UsersController {
   public path = "/users";

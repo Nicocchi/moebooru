@@ -1,10 +1,11 @@
 import { Request, Response, Router } from "express";
-import { CheckAuthorization, ValidateToken } from "utils";
+import { ValidateToken } from "utils";
 import imageSize from "image-size";
 import { Post } from "models/Posts";
 import { Tag } from "models/Tags";
 import { Artist } from "models/Artists";
 import { fileUpload } from "./MulterController";
+import { CheckAuthorization } from "middleware/verifyJWT";
 
 const imageDir = process.env.IMAGE_DIR || "public/";
 

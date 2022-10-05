@@ -6,6 +6,7 @@ export interface IUser {
   favoritePosts: object[];
   favoriteArtists: string[];
   favoriteTags: string[];
+  refreshToken: string;
 }
 
 export interface IArtist {
