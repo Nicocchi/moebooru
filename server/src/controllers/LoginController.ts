@@ -30,9 +30,17 @@ class LoginController {
       if (!CompareSync(password, user.password))
         return res.status(400).send("Username or password incorrect");
 
+      // const roles: string[] = Object.keys(user.roles).map(key => user.roles[key].toString());
+      // const roles: string[] = Object["values"](user.roles).map(x => x.toString());
+      // console.log(user.roles);
+      const roles = (<any>Object).values(user.roles);
+
       const accessToken = await GenerateAccessToken({
-        id: user.id,
-        username: user.username,
+        UserInfo: {
+          id: user.id,
+          username: user.username,
+          roles,
+        },
       });
 
       const refreshToken = await GenerateRefreshToken({

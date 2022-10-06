@@ -8,7 +8,7 @@ export function CheckAuthorization(
     next: express.NextFunction
   ) {
     const token = _req.headers["authorization"];
-    if (!token) return res.sendStatus(401);
+    if (!token?.startsWith("Bearer ")) return res.sendStatus(401);
 
     const user = ValidateToken(token);
 
@@ -18,7 +18,8 @@ export function CheckAuthorization(
         return res.sendStatus(403);
     }
 
-    _req.user = user;
+    _req.user = user.UserInfo.username;
+    _req.roles = user.UserInfo.roles
     next();
     return;
   }

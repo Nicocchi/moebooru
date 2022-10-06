@@ -9,8 +9,9 @@ import { errorHandler } from "middleware/errorHandler";
 // const cookieParser = require("cookie-parser");
 import cookieParser from "cookie-parser";
 import { credentials } from "middleware/credentials";
+import { allowedOrigins } from "./config/allowedOrigins";
 const cors = require("cors");
-const allowedOrigins = require('./config/allowedOrigins');
+// const allowedOrigins = require('./config/allowedOrigins');
 
 class App {
   public app: express.Application;

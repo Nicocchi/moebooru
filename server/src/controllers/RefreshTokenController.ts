@@ -24,27 +24,37 @@ class RefreshTokenController {
     const refreshToken = cookies.jwt;
 
     try {
-      const user = await User.findOne({
-        refreshToken,
-      }, { password: 0});
+      const user = await User.findOne(
+        {
+          refreshToken,
+        },
+        { password: 0 }
+      );
 
       if (!user) return res.sendStatus(403);
 
       // Evaluate JWT
-      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: Error, decoded: any) => {
-        if (err || user.id !== decoded.id) return res.sendStatus(403);
-        const accessToken = GenerateAccessToken({
-            id: user.id,
-            username: user.username,
+      jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err: Error, decoded: any) => {
+          if (err || user.id !== decoded.id) return res.sendStatus(403);
+          const roles = (<any>Object).values(user.roles);
+          const accessToken = GenerateAccessToken({
+            UserInfo: {
+              id: user.id,
+              username: user.username,
+              roles,
+            },
           });
 
           return res.status(200).send({ accessToken });
-      });
+        }
+      );
 
       return;
-      
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res.status(500).send(error);
     }
   };

@@ -6,11 +6,11 @@ const schema = new Schema<IUser>(
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     refreshToken: String,
-    admin: { type: Boolean, required: true},
     avatar: String,
     favoritePosts: Array,
     favoriteArtists: Array,
     favoriteTags: Array,
+    roles: { type: Schema.Types.Mixed, required: true},
   },
   { timestamps: true }
 );

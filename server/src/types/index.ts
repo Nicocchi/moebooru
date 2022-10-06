@@ -2,11 +2,15 @@ export interface IUser {
   username: string;
   password: string;
   avatar?: string;
-  admin: boolean;
-  favoritePosts: object[];
-  favoriteArtists: string[];
-  favoriteTags: string[];
+  favoritePosts?: string[];
+  favoriteArtists?: string[];
+  favoriteTags?: string[];
   refreshToken: string;
+  roles: unknown;
+}
+
+export interface IRole {
+  name: string;
 }
 
 export interface IArtist {
