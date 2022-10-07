@@ -1,5 +1,12 @@
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 export default axios.create({
-    baseURL: `${process.env.REACT_APP_BACKEND_URL}`
-  });
+  baseURL: BASE_URL,
+});
+
+export const axiosPrivate = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});

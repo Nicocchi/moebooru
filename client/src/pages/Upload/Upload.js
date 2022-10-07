@@ -1,11 +1,20 @@
 import React, { useState } from "react";
-import { Button, Text, Input, Switch, Tooltip, Progress } from "@nextui-org/react";
+import {
+  Button,
+  Text,
+  Input,
+  Switch,
+  Tooltip,
+  Progress,
+} from "@nextui-org/react";
 import FileDragAndDrop from "../../components/DragAndDrop";
 import CreatableSelect from "react-select/creatable";
 import customStyles from "../../components/ReactSelect/SelectStyle";
 import { FaTrash } from "react-icons/fa";
 
 import "./Upload.css";
+import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "../../utils/axios.config";
 
 function Home() {
@@ -23,6 +32,9 @@ function Home() {
   const [hiddenToggle, setHiddenToggle] = useState(false);
   const [anonymousToggle, setAnonymousToggle] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSrc = (ev) => {
     if (ev.key === "Enter") {
@@ -37,7 +49,7 @@ function Home() {
 
   const handleTagSearch = (value) => {
     axios
-      .get(`/tags?tag=${value}`)
+      .get(`/tags?tags=${value}`)
       .then((res) => {
         if (res.data) {
           setTagOptions(res.data);
@@ -50,7 +62,7 @@ function Home() {
 
   const handleArtistSearch = (value) => {
     axios
-      .get(`/artists?artist=${value}`)
+      .get(`/artists?artists=${value}`)
       .then((res) => {
         if (res.data) {
           setArtistOptions(res.data);
@@ -72,7 +84,7 @@ function Home() {
   const deleteFile = () => {
     setFiles([]);
     setIsFilePicked(false);
-  }
+  };
 
   const onFileUpload = (e) => {
     const formData = new FormData();
@@ -88,13 +100,15 @@ function Home() {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      onUploadProgress: progressEv => {
-        const progress = Math.round(100 * (progressEv.loaded / progressEv.total))
+      onUploadProgress: (progressEv) => {
+        const progress = Math.round(
+          100 * (progressEv.loaded / progressEv.total)
+        );
         setUploadProgress(progress);
-      }
+      },
     };
 
-    axios
+    axiosPrivate
       .post(`/posts`, formData, options)
       .then((res) => {
         setFiles(null);
@@ -105,6 +119,7 @@ function Home() {
       })
       .catch((err) => {
         console.error(err);
+        navigate("/login", { state: { from: location }, replace: true });
       });
   };
 
@@ -135,7 +150,11 @@ function Home() {
       {files && files.length > 0 ? (
         <div style={{ marginTop: "30px" }}>
           <Button onPress={onFileUpload}>Upload All</Button>
-          <Progress color="primary" value={uploadProgress} style={{marginTop: "30px"}} />
+          <Progress
+            color="primary"
+            value={uploadProgress}
+            style={{ marginTop: "30px" }}
+          />
         </div>
       ) : (
         <div></div>
