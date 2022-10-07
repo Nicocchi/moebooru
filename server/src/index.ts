@@ -8,6 +8,7 @@ import TagsController from "controllers/TagsController";
 import ArtistsController from "controllers/ArtistsController";
 import RefreshTokenController from "controllers/RefreshTokenController";
 import LogoutController from "controllers/LogoutController";
+import RolesController from "./controllers/RolesController";
 
 const _PORT = Number(process.env.PORT!);
 
@@ -21,6 +22,7 @@ const app = new App(
     new PostsController(),
     new TagsController(),
     new ArtistsController(),
+    new RolesController(),
   ],
   _PORT
 );

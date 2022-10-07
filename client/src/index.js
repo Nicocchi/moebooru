@@ -5,22 +5,24 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { NextUIProvider } from "@nextui-org/react";
 import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./context/AuthProvider";
 
-import { createTheme } from "@nextui-org/react"
+import { createTheme } from "@nextui-org/react";
 
 const darkTheme = createTheme({
-  type: 'dark',
+  type: "dark",
 });
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <NextUIProvider theme={darkTheme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </NextUIProvider>
+    <AuthProvider>
+      <NextUIProvider theme={darkTheme}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </NextUIProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

@@ -28,7 +28,7 @@ class LoginController {
       if (!user) return res.status(400).send("Username or password incorrect");
 
       if (!CompareSync(password, user.password))
-        return res.status(400).send("Username or password incorrect");
+        return res.status(401).send("Username or password incorrect");
 
       // const roles: string[] = Object.keys(user.roles).map(key => user.roles[key].toString());
       // const roles: string[] = Object["values"](user.roles).map(x => x.toString());
@@ -55,7 +55,7 @@ class LoginController {
         secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
-      return res.status(200).send({ accessToken });
+      return res.status(200).send({ accessToken, roles });
     } catch (error) {
       console.log(error);
       return res.status(500).send({ message: "Something went wrong", error });
