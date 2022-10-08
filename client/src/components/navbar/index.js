@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import axios from "../../utils/axios.config";
 import { RabbitLogo } from "../Logo/Rabbit";
 import customStyles from "../ReactSelect/SelectStyle";
+import useAuth from "../../hooks/useAuth";
+import { useLogout } from "../../hooks/useLogout";
 
 function NavBar() {
   const activeColor = "primary";
@@ -16,6 +18,8 @@ function NavBar() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const { auth } = useAuth();
+  const logout = useLogout();
 
   useEffect(() => {
     setActivePage(location.pathname);
@@ -41,6 +45,12 @@ function NavBar() {
       navigate(`/browse?tags=${selectedOption.map((opt) => opt.label)}`);
     }
   };
+
+  const signOut = async () => {
+    await logout();
+    console.log("ATU", auth)
+    navigate('/')
+  }
 
   return (
     <div>
@@ -91,12 +101,24 @@ function NavBar() {
               styles={customStyles}
               width="200px"
             />
-            <Link to="/login" className="Navbar__link" style={{marginLeft: "20px"}}>
-              <Text>Login</Text>
-            </Link>
-            <Button auto flat as={Link} color={activeColor} to="/register">
-              Sign Up
-            </Button>
+            {!auth.accessToken ? (
+              <>
+                <Link
+                  to="/login"
+                  className="Navbar__link"
+                  style={{ marginLeft: "20px" }}
+                >
+                  <Text>Login</Text>
+                </Link>
+                <Button auto flat as={Link} color={activeColor} to="/register">
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <Button auto flat color={activeColor} onPress={signOut} style={{ marginLeft: "20px" }}>
+                Logout
+              </Button>
+            )}
           </div>
         </nav>
         <Outlet />

@@ -8,6 +8,7 @@ import Post from "./pages/Post/Post";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RequireAuth from "./components/RequireAuth";
+import { PersistLogin } from "./components/PersistLogin";
 import Layout from "./components/Layout";
 import { useEffect, useState } from "react";
 import axios from "./utils/axios.config";
@@ -32,31 +33,33 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<NavBar />}>
-          {/** Public routes */}
-          <Route index element={<Home />} />
-          <Route path="browse" element={<Gallery />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="post/:post_id" element={<Post />} />
+        <Route element={<PersistLogin />}>
+          <Route path="/" element={<NavBar />}>
+            {/** Public routes */}
+            <Route index element={<Home />} />
+            <Route path="browse" element={<Gallery />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="post/:post_id" element={<Post />} />
 
-          {/** Private routes */}
-          <Route
-            element={
-              <RequireAuth
-                allowedRoles={[
-                  ...roles.map((role) =>
-                    role.name === "User" ? role._id : null
-                  ),
-                ]}
-              />
-            }
-          >
-            <Route path="upload" element={<Upload />} />
+            {/** Private routes */}
+            <Route
+              element={
+                <RequireAuth
+                  allowedRoles={[
+                    ...roles.map((role) =>
+                      role.name === "User" ? role._id : null
+                    ),
+                  ]}
+                />
+              }
+            >
+              <Route path="upload" element={<Upload />} />
+            </Route>
+
+            {/** 404 */}
+            {/* <Route path="*" element={<NoMatch />} /> */}
           </Route>
-
-          {/** 404 */}
-          {/* <Route path="*" element={<NoMatch />} /> */}
         </Route>
       </Routes>
     </div>

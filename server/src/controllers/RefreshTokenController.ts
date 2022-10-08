@@ -48,7 +48,7 @@ class RefreshTokenController {
             },
           });
 
-          return res.status(200).send({ accessToken });
+          return res.status(200).send({ accessToken, roles });
         }
       );
 

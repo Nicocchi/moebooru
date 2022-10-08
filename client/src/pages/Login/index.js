@@ -7,6 +7,7 @@ import {
   Tooltip,
   Progress,
   Spacer,
+  Checkbox,
 } from "@nextui-org/react";
 import useAuth from "../../hooks/useAuth";
 import { FaTrash } from "react-icons/fa";
@@ -17,7 +18,7 @@ import axios from "../../utils/axios.config";
 const LOGIN_URL = "/login";
 
 function Login() {
-  const { setAuth } = useAuth();
+  const { setAuth, persist, setPersist } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,6 +38,10 @@ function Login() {
   useEffect(() => {
     setErrMsg("");
   }, [username, password]);
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  }, [persist]);
 
   const handleSubmit = (e) => {
     axios
@@ -65,6 +70,10 @@ function Login() {
         }
         errRef.current.focus();
       });
+  };
+
+  const togglePersist = () => {
+    setPersist((prev) => !prev);
   };
 
   return (
@@ -102,6 +111,10 @@ function Login() {
           {errMsg}
         </Text>
         <Button onPress={handleSubmit}>Login</Button>
+        <Spacer />
+        <Checkbox isSelected={persist} size="sm" onChange={togglePersist}>
+          Trust this device
+        </Checkbox>
       </form>
     </div>
   );
