@@ -1,5 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
-import { Text, Button } from "@nextui-org/react";
+import { Text, Button, Dropdown, Avatar, User } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import "./index.css";
@@ -9,12 +9,14 @@ import { RabbitLogo } from "../Logo/Rabbit";
 import customStyles from "../ReactSelect/SelectStyle";
 import useAuth from "../../hooks/useAuth";
 import { useLogout } from "../../hooks/useLogout";
+import jwt_decode from "jwt-decode";
 
 function NavBar() {
   const activeColor = "primary";
   const [activePage, setActivePage] = useState("");
   const [tagOptions, setTagOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,6 +25,11 @@ function NavBar() {
 
   useEffect(() => {
     setActivePage(location.pathname);
+    const decoded = auth?.accessToken
+      ? jwt_decode(auth.accessToken)
+      : undefined;
+    if (decoded) setUsername(decoded.UserInfo.username);
+
     return () => {};
   }, [location]);
 
@@ -46,10 +53,12 @@ function NavBar() {
     }
   };
 
-  const signOut = async () => {
-    await logout();
-    console.log("ATU", auth);
-    navigate("/");
+  const signOut = async (e) => {
+    if (e === "logout") {
+      await logout();
+      console.log("ATU", auth);
+      navigate("/");
+    }
   };
 
   return (
@@ -115,15 +124,31 @@ function NavBar() {
                 </Button>
               </>
             ) : (
-              <Button
-                auto
-                flat
-                color={activeColor}
-                onPress={signOut}
-                style={{ marginLeft: "20px" }}
-              >
-                Logout
-              </Button>
+              <div style={{ marginLeft: "40px", marginRight: "20px" }}>
+                <Dropdown placement="bottom-left">
+                  <Dropdown.Trigger>
+                    <User
+                      bordered
+                      as="button"
+                      size="lg"
+                      color="primary"
+                      name={username}
+                    />
+                  </Dropdown.Trigger>
+                  <Dropdown.Menu
+                    color="primary"
+                    aria-label="User Actions"
+                    onAction={signOut}
+                  >
+                    <Dropdown.Item key="settings">
+                      My Settings
+                    </Dropdown.Item>
+                    <Dropdown.Item key="logout" color="error" withDivider>
+                      Log Out
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
             )}
           </div>
         </nav>

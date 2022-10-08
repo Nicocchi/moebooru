@@ -55,7 +55,7 @@ class LoginController {
         secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
-      return res.status(200).send({ accessToken, roles });
+      return res.status(200).send({ accessToken });
     } catch (error) {
       console.log(error);
       return res.status(500).send({ message: "Something went wrong", error });

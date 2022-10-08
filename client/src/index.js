@@ -6,8 +6,12 @@ import reportWebVitals from "./reportWebVitals";
 import { NextUIProvider } from "@nextui-org/react";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
-
+import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import { createTheme } from "@nextui-org/react";
+
+if (process.env.NODE_ENV === "production") {
+  disableReactDevTools();
+}
 
 const darkTheme = createTheme({
   type: "dark",
@@ -16,13 +20,13 @@ const darkTheme = createTheme({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <NextUIProvider theme={darkTheme}>
-        <BrowserRouter>
+    <NextUIProvider theme={darkTheme}>
+      <BrowserRouter>
+        <AuthProvider>
           <App />
-        </BrowserRouter>
-      </NextUIProvider>
-    </AuthProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </NextUIProvider>
   </React.StrictMode>
 );
 

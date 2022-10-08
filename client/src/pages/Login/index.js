@@ -50,9 +50,7 @@ function Login() {
       })
       .then((res) => {
         const accessToken = res?.data?.accessToken;
-        const roles = res?.data?.roles;
-        console.log(roles, accessToken);
-        setAuth({ username, roles, accessToken });
+        setAuth({ username, accessToken });
         setUsername("");
         setPassword("");
         navigate(from, { replace: true });
