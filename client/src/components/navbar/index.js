@@ -48,9 +48,9 @@ function NavBar() {
 
   const signOut = async () => {
     await logout();
-    console.log("ATU", auth)
-    navigate('/')
-  }
+    console.log("ATU", auth);
+    navigate("/");
+  };
 
   return (
     <div>
@@ -115,7 +115,13 @@ function NavBar() {
                 </Button>
               </>
             ) : (
-              <Button auto flat color={activeColor} onPress={signOut} style={{ marginLeft: "20px" }}>
+              <Button
+                auto
+                flat
+                color={activeColor}
+                onPress={signOut}
+                style={{ marginLeft: "20px" }}
+              >
                 Logout
               </Button>
             )}

@@ -10,15 +10,16 @@ import {
   Checkbox,
 } from "@nextui-org/react";
 import useAuth from "../../hooks/useAuth";
-import { FaTrash } from "react-icons/fa";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { useToggle } from "../../hooks/useToggle";
 
 import "./index.css";
 import axios from "../../utils/axios.config";
 const LOGIN_URL = "/login";
 
 function Login() {
-  const { setAuth, persist, setPersist } = useAuth();
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,9 +28,11 @@ function Login() {
   const userRef = useRef();
   const errRef = useRef();
 
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
+  const [username, setUsername] = useLocalStorage("username", "");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [check, toggleCheck] =  useToggle('persist', false);
 
   useEffect(() => {
     userRef.current.focus();
@@ -38,10 +41,6 @@ function Login() {
   useEffect(() => {
     setErrMsg("");
   }, [username, password]);
-
-  useEffect(() => {
-    localStorage.setItem("persist", persist);
-  }, [persist]);
 
   const handleSubmit = (e) => {
     axios
@@ -70,10 +69,6 @@ function Login() {
         }
         errRef.current.focus();
       });
-  };
-
-  const togglePersist = () => {
-    setPersist((prev) => !prev);
   };
 
   return (
@@ -112,7 +107,7 @@ function Login() {
         </Text>
         <Button onPress={handleSubmit}>Login</Button>
         <Spacer />
-        <Checkbox isSelected={persist} size="sm" onChange={togglePersist}>
+        <Checkbox isSelected={check} size="sm" onChange={toggleCheck}>
           Trust this device
         </Checkbox>
       </form>
