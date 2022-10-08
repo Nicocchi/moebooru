@@ -10,8 +10,6 @@ export const useRefreshToken = () => {
         withCredentials: true,
       });
       setAuth((prev) => {
-        console.log(JSON.stringify(prev));
-        console.log("ROLES_", res.data);
         return {
           ...prev,
           roles: res.data.roles,
