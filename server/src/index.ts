@@ -10,7 +10,7 @@ import RefreshTokenController from "controllers/RefreshTokenController";
 import LogoutController from "controllers/LogoutController";
 import RolesController from "./controllers/RolesController";
 
-const _PORT = Number(process.env.PORT!);
+const _PORT = Number(process.env.PORT) || 5000;
 
 const app = new App(
   [
