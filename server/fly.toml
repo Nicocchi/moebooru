@@ -1,0 +1,53 @@
+# fly.toml file generated for moebooru-backend on 2023-03-09T10:17:49-05:00
+
+app = "moebooru-backend"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[build]
+  builder = "heroku/buildpacks:20"
+
+[env]
+  PORT = "8080"
+  DB_MONGO_URL = "mongodb+srv://madmin:SR5cViv5lyD6zIQE@cluster0.ktosmr4.mongodb.net/?retryWrites=true&w=majority"
+  DB_MONGO_DB_NAME = "moebooru"
+  REFRESH_TOKEN_SECRET = "d6d3d712ea839f8f7cd8ef72e12d93113cdb32c1a0ab831dcd8e39f5c1c1ffe595378fdf8cab79c611fde28e329bdc5cf99ff448a0c7d840e6b119b5778c17c7"
+  REFRESH_TOKEN_EXPIRES_IN = 1
+  ACCESS_TOKEN_SECRET = "b6e8702e27cc6ad04c6784d7669d36547e11f77d75789735801f4ddf817c12f33eca90a4da44b08a285e0a2cdf1e1a6f2c0da325fabfe1e1690ed9eba4e995dd"
+  ACCESS_TOKEN_EXPIRES_IN = 4
+  ENCRYPT_SECRET = "f5222953f59dedd801f8870957ce3f459fbbe56d58c3d910badc325805f3b8b07f3424d4d4ae4f28652f831e67f0318d5ee0752159a5c94a686186b5870357fe"
+  ENCRYPT_SALT_LEVEL = 4
+  IMAGE_DIR = "public/"
+  TS_NODE_DEV = true
+  CORS_ORIGIN = "*"
+  LOG_DIR = "logs/"
+
+[experimental]
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
