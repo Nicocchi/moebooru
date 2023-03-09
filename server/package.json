@@ -4,10 +4,12 @@
   "description": "booru style image tag system",
   "main": "src/index.ts",
   "scripts": {
+    "start": "node dist/index.js",
+    "postinstall": "tsc",
     "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "test": "jest tests/",
     "test::dev": "jest --watch",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc",
     "lint": "tslint --config tslint.json --project ."
   },
   "author": "Nicocchi",
