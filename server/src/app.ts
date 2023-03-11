@@ -42,8 +42,8 @@ class App {
     // Cors
     const corsOptions = {
       origin: process.env.ALLOWED_ORIGIN,
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-      allowedHeaders: "Origin, Content-Type, Accept",
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
       credentials: true,
       optionsSuccessStatus: 204,
     };
