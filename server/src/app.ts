@@ -33,6 +33,7 @@ class App {
       origin: (origin: string, cb: Function) => {
         console.log("ORIGIN: ", origin);
         if (allowedOrigins.indexOf(origin) !== -1) {
+          console.log("ALLOWED BY CORS");
           cb(null, true);
         } else {
           cb(new Error("Not allowed by CORS"));
@@ -44,7 +45,7 @@ class App {
       optionsSuccessStatus: 204,
     };
 
-    this.app.use(cors(corsOptions));
+    this.app.options('*', cors(corsOptions));
 
     this.app.use(express.static(imageDir));
 
