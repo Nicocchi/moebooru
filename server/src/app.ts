@@ -33,6 +33,8 @@ class App {
     // parse requests of content-type - application/json
     this.app.use(bodyParser.json());
 
+    this.app.use(cookieParser());
+
     // Cors
     const corsOptions = {
       origin: (origin: string, cb: Function) => {
@@ -46,6 +48,8 @@ class App {
       },
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+      exposedHeaders: "*",
+      preflightContinue: false,
       credentials: true,
       optionsSuccessStatus: 200,
     };
@@ -54,22 +58,12 @@ class App {
 
     this.app.options('*', cors(corsOptions));
 
-    this.app.use(function (req, res, next) {
-      res.setHeader('Access-Control-Allow-Origin', `${process.env.ALLOWED_ORIGIN}`);
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, origin, accept, authorization,Content-Type, Origin, Authorization');
-      res.setHeader('Access-Control-Allow-Credentials', "true");
-      next();
-    });
+    
 
     this.app.use(express.static(imageDir));
 
     // this.app.use(morgan("dev"));
     this.app.use(logger);
-    
-    
-    this.app.use(cookieParser());
-
     
     this.app.use(credentials);
 
