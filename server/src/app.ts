@@ -46,7 +46,7 @@ class App {
       origin: (origin: string, cb: Function) => {
         if (!origin) return cb(null, true);
         if (allowedOrigins.indexOf(origin) === -1) {
-          var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+          var msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
           return cb(new Error(msg), false);
         }
         return cb(null, true);
