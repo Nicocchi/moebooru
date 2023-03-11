@@ -54,6 +54,14 @@ class App {
 
     this.app.options('*', cors(corsOptions));
 
+    this.app.use(function (req, res, next) {
+      res.setHeader('Access-Control-Allow-Origin', `${process.env.ALLOWED_ORIGIN}`);
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, origin, accept, authorization,Content-Type, Origin, Authorization');
+      res.setHeader('Access-Control-Allow-Credentials', "true");
+      next();
+    });
+
     this.app.use(express.static(imageDir));
 
     // this.app.use(morgan("dev"));
