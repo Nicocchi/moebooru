@@ -47,7 +47,7 @@ class App {
       //   }
       // },
       origin: [process.env.ALLOWED_ORIGIN],
-      allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+      allowedHeaders: ["Content-Type", "Authorization", "Access-Control-Allow-Methods", "Access-Control-Request-Headers"],
       credentials: true,
       enablePreflight: true,
     };
