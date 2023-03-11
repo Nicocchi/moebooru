@@ -28,6 +28,17 @@ class App {
   }
 
   private initializeMiddlewares() {
+    // Cors
+    const corsOptions = {
+      origin: process.env.ALLOWED_ORIGIN,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+      credentials: true,
+      optionsSuccessStatus: 204,
+    };
+
+    this.app.use(cors(corsOptions));
+    
     this.app.use(express.static(imageDir));
 
     // this.app.use(morgan("dev"));
@@ -39,17 +50,8 @@ class App {
     
     this.app.use(cookieParser());
 
-    // Cors
-    const corsOptions = {
-      origin: process.env.ALLOWED_ORIGIN,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
-      credentials: true,
-      optionsSuccessStatus: 204,
-    };
-
+    
     this.app.use(credentials);
-    this.app.use(cors(corsOptions));
 
     this.app.use(errorHandler);
   }
