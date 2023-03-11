@@ -28,6 +28,11 @@ class App {
   }
 
   private initializeMiddlewares() {
+    // parse requests of content-type - application/x-www-form-urlencoded
+    this.app.use(bodyParser.urlencoded({ extended: true }));
+    // parse requests of content-type - application/json
+    this.app.use(bodyParser.json());
+
     // Cors
     const corsOptions = {
       origin: (origin: string, cb: Function) => {
@@ -42,21 +47,26 @@ class App {
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
       credentials: true,
-      optionsSuccessStatus: 204,
+      optionsSuccessStatus: 200,
     };
 
-    this.app.use(cors(corsOptions));
+    // this.app.use(cors(corsOptions));
 
     this.app.options('*', cors());
+
+    this.app.use(function (req, res, next) {
+      res.setHeader('Access-Control-Allow-Origin', `${process.env.ALLOWED_ORIGIN}`);
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, origin, accept, authorization,Content-Type, Origin, Authorization');
+      res.setHeader('Access-Control-Allow-Credentials', "true");
+      next();
+    });
 
     this.app.use(express.static(imageDir));
 
     // this.app.use(morgan("dev"));
     this.app.use(logger);
-    // parse requests of content-type - application/x-www-form-urlencoded
-    this.app.use(bodyParser.urlencoded({ extended: true }));
-    // parse requests of content-type - application/json
-    this.app.use(bodyParser.json());
+    
     
     this.app.use(cookieParser());
 
