@@ -30,7 +30,14 @@ class App {
   private initializeMiddlewares() {
     // Cors
     const corsOptions = {
-      origin: "https://moebooru.netlify.app/",
+      origin: (origin: string, cb: Function) => {
+        console.log("ORIGIN: ", origin);
+        if (allowedOrigins.indexOf(origin) !== -1) {
+          cb(null, true);
+        } else {
+          cb(new Error("Not allowed by CORS"));
+        }
+      },
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
       credentials: true,
