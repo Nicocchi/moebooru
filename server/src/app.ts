@@ -51,7 +51,8 @@ class App {
         }
         return cb(null, true);
       },
-      allowedHeaders: ["Content-Type", "Authorization", "Origin", "Authorization"],
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      allowedHeaders: ['Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'],
       credentials: true,
       enablePreflight: true,
     };
