@@ -41,14 +41,11 @@ class App {
 
     // Cors
     const corsOptions = {
-      origin: (origin: string, cb: Function) => {
-        if (allowedOrigins.indexOf(origin) !== -1) {
-          cb(null, true);
-        } else {
-          cb(new Error("Not allowed by CORS"));
-        }
-      },
-      optionsSuccessStatus: 200,
+      origin: process.env.ALLOWED_ORIGIN,
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+      allowedHeaders: "Origin, Content-Type, Accept",
+      credentials: true,
+      optionsSuccessStatus: 204,
     };
 
     this.app.use(credentials);
