@@ -45,7 +45,7 @@ class App {
       optionsSuccessStatus: 204,
     };
 
-    this.app.use(cors());
+    this.app.use(cors(corsOptions));
 
     this.app.options('*', cors());
 
