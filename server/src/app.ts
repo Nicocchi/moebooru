@@ -50,6 +50,7 @@ class App {
       allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
       exposedHeaders: "*",
       preflightContinue: false,
+      enablePreflight: true,
       credentials: true,
       optionsSuccessStatus: 200,
     };
