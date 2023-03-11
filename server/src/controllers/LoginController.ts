@@ -55,6 +55,7 @@ class LoginController {
         secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
+      res.header("Access-Control-Allow-Origin", "https://moebooru.netlify.app/");
       return res.status(200).send({ accessToken });
     } catch (error) {
       console.log(error);
