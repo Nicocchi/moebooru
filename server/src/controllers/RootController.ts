@@ -1,5 +1,4 @@
 import * as express from "express";
-import { CompareSync, GenerateAccessToken, GenerateRefreshToken } from "utils";
 
 class RootController {
   public path = "/";

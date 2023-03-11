@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "booru style image tag system",
   "main": "src/index.ts",
+  "type": "commonjs",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "postinstall": "tsc",
     "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "test": "jest tests/",
@@ -55,7 +56,7 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
-    "tsconfig-paths": "^4.1.0",
+    "tsconfig-paths": "^4.1.2",
     "tslint": "^6.1.3",
     "typescript": "^4.8.4"
   }
