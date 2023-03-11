@@ -6,10 +6,10 @@ import "./index.css";
 import { useEffect, useState } from "react";
 import axios from "../../utils/axios.config";
 import { RabbitLogo } from "../Logo/Rabbit";
-import customStyles from "../ReactSelect/SelectStyle";
 import useAuth from "../../hooks/useAuth";
 import { useLogout } from "../../hooks/useLogout";
 import jwt_decode from "jwt-decode";
+import customStyles from "../ReactSelect/SelectStyle";
 
 function NavBar() {
   const activeColor = "primary";
