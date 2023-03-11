@@ -45,7 +45,9 @@ class App {
       optionsSuccessStatus: 204,
     };
 
-    this.app.options('*', cors(corsOptions));
+    this.app.use(cors());
+
+    this.app.options('*', cors());
 
     this.app.use(express.static(imageDir));
 
