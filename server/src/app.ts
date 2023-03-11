@@ -28,12 +28,9 @@ class App {
   }
 
   private initializeMiddlewares() {
-    // parse requests of content-type - application/x-www-form-urlencoded
-    this.app.use(bodyParser.urlencoded({ extended: true }));
-    // parse requests of content-type - application/json
-    this.app.use(bodyParser.json());
+   
 
-    this.app.use(cookieParser());
+    
 
     // Cors
     const corsOptions = {
@@ -46,8 +43,15 @@ class App {
       //     cb(new Error("Not allowed by CORS"));
       //   }
       // },
-      origin: [process.env.ALLOWED_ORIGIN],
-      allowedHeaders: ["Content-Type", "Authorization", "Access-Control-Allow-Methods", "Access-Control-Request-Headers"],
+      origin: (origin: string, cb: Function) => {
+        if (!origin) return cb(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+          var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+          return cb(new Error(msg), false);
+        }
+        return cb(null, true);
+      },
+      allowedHeaders: ["Content-Type", "Authorization", "Origin", "Authorization"],
       credentials: true,
       enablePreflight: true,
     };
@@ -56,7 +60,12 @@ class App {
 
     this.app.options('*', cors(corsOptions));
 
-    
+     // parse requests of content-type - application/x-www-form-urlencoded
+     this.app.use(bodyParser.urlencoded({ extended: true }));
+     // parse requests of content-type - application/json
+     this.app.use(bodyParser.json());
+
+    this.app.use(cookieParser());
 
     this.app.use(express.static(imageDir));
 
