@@ -37,22 +37,19 @@ class App {
 
     // Cors
     const corsOptions = {
-      origin: (origin: string, cb: Function) => {
-        console.log("ORIGIN: ", origin);
-        if (allowedOrigins.indexOf(origin) !== -1) {
-          console.log("ALLOWED BY CORS");
-          cb(null, true);
-        } else {
-          cb(new Error("Not allowed by CORS"));
-        }
-      },
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+      // origin: (origin: string, cb: Function) => {
+      //   console.log("ORIGIN: ", origin);
+      //   if (allowedOrigins.indexOf(origin) !== -1) {
+      //     console.log("ALLOWED BY CORS");
+      //     cb(null, true);
+      //   } else {
+      //     cb(new Error("Not allowed by CORS"));
+      //   }
+      // },
+      origin: [process.env.ALLOWED_ORIGIN],
       allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
-      exposedHeaders: "*",
-      preflightContinue: false,
-      enablePreflight: true,
       credentials: true,
-      optionsSuccessStatus: 200,
+      enablePreflight: true,
     };
 
     this.app.use(cors(corsOptions));
