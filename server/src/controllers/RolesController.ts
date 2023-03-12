@@ -1,6 +1,6 @@
 import * as express from "express";
-import { Role } from "../models/Roles";
 import { CheckAuthorization } from "middleware/verifyJWT";
+import { Role } from "models/Roles";
 
 class RolesController {
   public path = "/roles";
@@ -15,7 +15,6 @@ class RolesController {
   }
 
   getAllRoles = async (_req: express.Request, res: express.Response) => {
-    const roles = await Role.find({});
 
     try {
       const roles = await Role.find({});
