@@ -6,7 +6,7 @@ import { Role } from "../models/Roles";
 export const DatabaseInit = async () => {
   try {
     await connect(
-      `${process.env.DB_MONGO_URL!}/${process.env.DB_MONGO_DB_NAME}`
+      `${process.env.DB_MONGO_URL!}`
     );
     console.log("Connection Mongo: OK");
 
@@ -19,7 +19,7 @@ export const DatabaseInit = async () => {
 };
 
 async function run() {
-  await connect(`${process.env.DB_MONGO_URL}/${process.env.DB_MONGO_DB_NAME}`);
+  await connect(`${process.env.DB_MONGO_URL}`);
 
   // TODO: This doesn't prevent recreation of new old dbs if they already exist
   //       need to update for better way of handling these
