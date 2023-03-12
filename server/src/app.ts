@@ -33,29 +33,34 @@ class App {
     
 
     // Cors
+    // const corsOptions = {
+    //   // origin: (origin: string, cb: Function) => {
+    //   //   console.log("ORIGIN: ", origin);
+    //   //   if (allowedOrigins.indexOf(origin) !== -1) {
+    //   //     console.log("ALLOWED BY CORS");
+    //   //     cb(null, true);
+    //   //   } else {
+    //   //     cb(new Error("Not allowed by CORS"));
+    //   //   }
+    //   // },
+    //   origin: (origin: string, cb: Function) => {
+    //     if (!origin) return cb(null, true);
+    //     if (allowedOrigins.indexOf(origin) === -1) {
+    //       var msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+    //       return cb(new Error(msg), false);
+    //     }
+    //     return cb(null, true);
+    //   },
+    //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    //   allowedHeaders: ['Origin,X-Requested-With,Content-Type,Accept,content-type'],
+    //   credentials: true,
+    //   enablePreflight: true,
+    // };
+
     const corsOptions = {
-      // origin: (origin: string, cb: Function) => {
-      //   console.log("ORIGIN: ", origin);
-      //   if (allowedOrigins.indexOf(origin) !== -1) {
-      //     console.log("ALLOWED BY CORS");
-      //     cb(null, true);
-      //   } else {
-      //     cb(new Error("Not allowed by CORS"));
-      //   }
-      // },
-      origin: (origin: string, cb: Function) => {
-        if (!origin) return cb(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-          var msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
-          return cb(new Error(msg), false);
-        }
-        return cb(null, true);
-      },
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      allowedHeaders: ['Origin,X-Requested-With,Content-Type,Accept,content-type'],
+      origin: ["https://moebooru.netlify.app"],
       credentials: true,
-      enablePreflight: true,
-    };
+    }
 
     this.app.use(cors(corsOptions));
 
