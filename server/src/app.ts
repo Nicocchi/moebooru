@@ -52,7 +52,7 @@ class App {
         return cb(null, true);
       },
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      allowedHeaders: ['Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'],
+      allowedHeaders: ['Origin,X-Requested-With,Content-Type,Accept,content-type'],
       credentials: true,
       enablePreflight: true,
     };
